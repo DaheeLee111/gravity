@@ -1,4 +1,3 @@
-import numpy as np
 import pygame
 
 from OpenGL.GL import *
@@ -14,16 +13,16 @@ class Squre:
         self.y = y
         self.z = z
 
-        self.vertices = (
-            (location[0]-x/2, location[1]-y/2, location[2]-z/2),
-            (location[0]+x/2, location[1]-y/2, location[2]-z/2),
-            (location[0]+x/2, location[1]+y/2, location[2]-z/2),
-            (location[0]-x/2, location[1]+y/2, location[2]-z/2),
-            (location[0]-x/2, location[1]-y/2, location[2]+z/2),
-            (location[0]+x/2, location[1]-y/2, location[2]+z/2),
-            (location[0]+x/2, location[1]+y/2, location[2]+z/2),
-            (location[0]-x/2, location[1]+y/2, location[2]+z/2),
-        )
+        self.vertices = [
+            [location[0]-x/2, location[1]-y/2, location[2]-z/2],
+            [location[0]+x/2, location[1]-y/2, location[2]-z/2],
+            [location[0]+x/2, location[1]+y/2, location[2]-z/2],
+            [location[0]-x/2, location[1]+y/2, location[2]-z/2],
+            [location[0]-x/2, location[1]-y/2, location[2]+z/2],
+            [location[0]+x/2, location[1]-y/2, location[2]+z/2],
+            [location[0]+x/2, location[1]+y/2, location[2]+z/2],
+            [location[0]-x/2, location[1]+y/2, location[2]+z/2]
+        ]
 
         self.edges = (
             (0, 1), (1, 2), (2, 3), (3, 0),
@@ -44,6 +43,12 @@ class Squre:
         for vertice in self.edges:
             glVertex3fv(self.vertices[vertice[0]])
             glVertex3fv(self.vertices[vertice[1]])
+
+    def move_to_x(self, distance):
+        result = []
+        for vertex in self.vertices:
+            result.append([vertex[0] + distance, vertex[1], vertex[2]])
+        self.vertices = result
 
 
 def main():
@@ -69,6 +74,12 @@ def main():
         glEnable(GL_LINE_SMOOTH)
         glEnable(GL_POLYGON_SMOOTH)
 
+        for event in pygame.mouse.get_pressed():
+            if pygame.mouse.get_pressed()[0]:
+                object.move_to_x(0.01)
+            if pygame.mouse.get_pressed()[2]:
+                object.move_to_x(-0.01)
+
         # 이벤트
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -76,10 +87,9 @@ def main():
             if event.type == pygame.KEYDOWN:
                 running = False
 
-        glRotatef(1, 1, 1, 1)
-
         # 그리기
         object.draw()
+        glRotatef(1, 1, 1, 1)
 
 
 main()
