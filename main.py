@@ -3,6 +3,8 @@ import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
+import math
+
 
 class Squre:
     def __init__(self, location, x, y, z):
@@ -50,6 +52,46 @@ class Squre:
             result.append([vertex[0] + distance, vertex[1], vertex[2]])
         self.vertices = result
 
+    def move_to_y(self, distance):
+        result = []
+        for vertex in self.vertices:
+            result.append([vertex[0], vertex[1] + distance, vertex[2]])
+        self.vertices = result
+
+    def rotate_to_x(self, angle):
+        matrix = [
+            [math.cos(math.radians(angle)), math.sin(math.radians(angle))],
+            [math.sin(math.radians(angle)), math.cos(math.radians(angle))]
+        ]
+        result = []
+
+        for vertex in self.vertices:
+            rotated = [
+                vertex[0] * matrix[0][0] - vertex[1] * matrix[0][1],
+                vertex[0] * matrix[1][0] + vertex[1] * matrix[1][1],
+                vertex[2]
+            ]
+            result.append(rotated)
+
+        self.vertices = result
+
+    def rotate_to_y(self, angle):
+        matrix = [
+            [math.cos(math.radians(angle)), math.sin(math.radians(angle))],
+            [math.sin(math.radians(angle)), math.cos(math.radians(angle))]
+        ]
+        result = []
+
+        for vertex in self.vertices:
+            rotated = [
+                vertex[0],
+                vertex[1] * matrix[0][0] - vertex[2] * matrix[0][1],
+                vertex[1] * matrix[1][0] + vertex[2] * matrix[1][1]
+            ]
+            result.append(rotated)
+
+        self.vertices = result
+
 
 def main():
     display = (800, 800)
@@ -76,9 +118,9 @@ def main():
 
         for event in pygame.mouse.get_pressed():
             if pygame.mouse.get_pressed()[0]:
-                object.move_to_x(0.01)
+                object.rotate_to_x(0.1)
             if pygame.mouse.get_pressed()[2]:
-                object.move_to_x(-0.01)
+                object.rotate_to_x(-0.1)
 
         # 이벤트
         for event in pygame.event.get():
@@ -89,7 +131,6 @@ def main():
 
         # 그리기
         object.draw()
-        glRotatef(1, 1, 1, 1)
 
 
 main()
