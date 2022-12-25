@@ -26,6 +26,17 @@ class Squre:
             [location[0]-x/2, location[1]+y/2, location[2]+z/2]
         ]
 
+        self.vertices = [
+            [0, 0, 0],
+            [x, 0, 0],
+            [x, y, 0],
+            [0, y, 0],
+            [0, 0, z],
+            [x, 0, z],
+            [x, y, z],
+            [0, y, z],
+        ]
+
         self.edges = (
             (0, 1), (1, 2), (2, 3), (3, 0),
             (4, 5), (5, 6), (6, 7), (7, 4),
@@ -67,8 +78,10 @@ class Squre:
 
         for vertex in self.vertices:
             rotated = [
-                vertex[0] * matrix[0][0] - vertex[1] * matrix[0][1],
-                vertex[0] * matrix[1][0] + vertex[1] * matrix[1][1],
+                ((vertex[0] - self.vertices[0][0]) * matrix[0][0] -
+                 (vertex[1] - self.vertices[0][1]) * matrix[0][1]) + self.vertices[0][0],
+                ((vertex[0] - self.vertices[0][0]) * matrix[1][0] +
+                 (vertex[1] - self.vertices[0][1]) * matrix[1][1]) + self.vertices[0][1],
                 vertex[2]
             ]
             result.append(rotated)
@@ -85,8 +98,10 @@ class Squre:
         for vertex in self.vertices:
             rotated = [
                 vertex[0],
-                vertex[1] * matrix[0][0] - vertex[2] * matrix[0][1],
-                vertex[1] * matrix[1][0] + vertex[2] * matrix[1][1]
+                ((vertex[1] - self.vertices[0][1]) * matrix[0][0] -
+                 (vertex[2] - self.vertices[0][2]) * matrix[0][1]) + self.vertices[0][1],
+                ((vertex[1] - self.vertices[0][1]) * matrix[1][0] +
+                 (vertex[2] - self.vertices[0][2]) * matrix[1][1]) + self.vertices[0][2]
             ]
             result.append(rotated)
 
@@ -118,16 +133,25 @@ def main():
 
         for event in pygame.mouse.get_pressed():
             if pygame.mouse.get_pressed()[0]:
-                object.rotate_to_x(0.1)
+                object.rotate_to_x(1)
             if pygame.mouse.get_pressed()[2]:
-                object.rotate_to_x(-0.1)
+                object.rotate_to_x(-1)
 
         # 이벤트
         for event in pygame.event.get():
+            # 종료
             if event.type == pygame.QUIT:
                 running = False
+            # 방향키
             if event.type == pygame.KEYDOWN:
-                running = False
+                if event.dict["key"] == pygame.K_RIGHT:
+                    object.move_to_x(0.1)
+                if event.dict["key"] == pygame.K_LEFT:
+                    object.move_to_x(-0.1)
+                if event.dict["key"] == pygame.K_UP:
+                    object.move_to_y(0.1)
+                if event.dict["key"] == pygame.K_DOWN:
+                    object.move_to_y(-0.1)
 
         # 그리기
         object.draw()
