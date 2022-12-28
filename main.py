@@ -8,7 +8,7 @@ from form import Squre
 
 def main():
     display = (800, 800)
-    object = Squre([0.5, -0.25, 1], 1, 1, 1)
+    cube = Squre([0.5, -0.25, 1], 1, 1, 1)
 
     pygame.init()
     pygame.display.set_mode(display, pygame.DOUBLEBUF | pygame.OPENGL)
@@ -21,12 +21,16 @@ def main():
     isSPACE = False
     while running:
 
+        # 그리기
+        cube.drawSqure()
+
         # pygame 환경변수
         pygame.time.Clock().tick(60)
         pygame.display.flip()
 
         # openGl 환경변수
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glEnable(GL_COLOR_MATERIAL)
         glEnable(GL_POINT_SMOOTH)
         glEnable(GL_LINE_SMOOTH)
         glEnable(GL_POLYGON_SMOOTH)
@@ -53,34 +57,31 @@ def main():
         # 마우스
         for event in pygame.mouse.get_pressed():
             if pygame.mouse.get_pressed()[0] and isCTRL == False and isSHIFT == False and isSPACE == False:
-                object.rotate_by_z(4)
+                cube.rotate_by_z(4)
             if pygame.mouse.get_pressed()[2] and isCTRL == False and isSHIFT == False and isSPACE == False:
-                object.rotate_by_z(-4)
+                cube.rotate_by_z(-4)
             if pygame.mouse.get_pressed()[0] and isSHIFT == False and isSPACE == False and isCTRL:
-                object.rotate_by_x(4)
+                cube.rotate_by_x(4)
             if pygame.mouse.get_pressed()[2] and isSHIFT == False and isSPACE == False and isCTRL:
-                object.rotate_by_x(-4)
+                cube.rotate_by_x(-4)
             if pygame.mouse.get_pressed()[0] and isCTRL == False and isSPACE == False and isSHIFT:
-                object.rotate_by_y(4)
+                cube.rotate_by_y(1)
             if pygame.mouse.get_pressed()[2] and isCTRL == False and isSPACE == False and isSHIFT:
-                object.rotate_by_y(-4)
+                cube.rotate_by_y(-1)
             if pygame.mouse.get_pressed()[0] and isCTRL == False and isSHIFT == False and isSPACE:
-                object.move_by_x(-0.01)
+                cube.move_to_x(-0.01)
             if pygame.mouse.get_pressed()[2] and isCTRL == False and isSHIFT == False and isSPACE:
-                object.move_by_x(0.01)
+                cube.move_to_x(0.01)
 
-        # 그리기
-        object.drawSqure()
+        # if cube.angle_x() > 0:
+        #     cube.rotate_by_z(cube.angle_x())
+        # if cube.angle_x() < 0:
+        #     cube.rotate_by_z(cube.angle_x())
 
-        if object.angle_x() < 0:
-            object.rotate_by_z(3)
-        if object.angle_x() > 0:
-            object.rotate_by_z(-3)
-
-        if object.angle_z() > 0:
-            object.rotate_by_x(3)
-        if object.angle_z() < 0:
-            object.rotate_by_x(-3)
+        # if cube.angle_z() > 0:
+        #     cube.rotate_by_x(cube.angle_z())
+        # if cube.angle_z() < 0:
+        #     cube.rotate_by_x(cube.angle_z())
 
 
 if __name__ == '__main__':
