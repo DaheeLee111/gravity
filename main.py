@@ -8,7 +8,7 @@ from form import Squre
 
 def main():
     display = (800, 800)
-    cube = Squre([0.5, -0.25, 1], 1, 1, 1)
+    cube = Squre([0, 0, 0], 1, 1, 1)
 
     pygame.init()
     pygame.display.set_mode(display, pygame.DOUBLEBUF | pygame.OPENGL)
@@ -57,31 +57,31 @@ def main():
         # 마우스
         for event in pygame.mouse.get_pressed():
             if pygame.mouse.get_pressed()[0] and isCTRL == False and isSHIFT == False and isSPACE == False:
-                cube.rotate_by_z(4)
+                cube.rotate_z_axis_wheel(6)
             if pygame.mouse.get_pressed()[2] and isCTRL == False and isSHIFT == False and isSPACE == False:
-                cube.rotate_by_z(-4)
+                cube.rotate_z_axis_wheel(-6)
             if pygame.mouse.get_pressed()[0] and isSHIFT == False and isSPACE == False and isCTRL:
-                cube.rotate_by_x(4)
+                cube.rotate_x_axis_wheel(6)
             if pygame.mouse.get_pressed()[2] and isSHIFT == False and isSPACE == False and isCTRL:
-                cube.rotate_by_x(-4)
+                cube.rotate_x_axis_wheel(-6)
             if pygame.mouse.get_pressed()[0] and isCTRL == False and isSPACE == False and isSHIFT:
-                cube.rotate_by_y(1)
+                cube.rotate_y_axis_wheel(-6)
             if pygame.mouse.get_pressed()[2] and isCTRL == False and isSPACE == False and isSHIFT:
-                cube.rotate_by_y(-1)
+                cube.rotate_y_axis_wheel(6)
             if pygame.mouse.get_pressed()[0] and isCTRL == False and isSHIFT == False and isSPACE:
                 cube.move_to_x(-0.01)
             if pygame.mouse.get_pressed()[2] and isCTRL == False and isSHIFT == False and isSPACE:
                 cube.move_to_x(0.01)
 
         # if cube.angle_x() > 0:
-        #     cube.rotate_by_z(cube.angle_x())
+        #     cube.rotate_z_axis_wheel(cube.angle_x())
         # if cube.angle_x() < 0:
-        #     cube.rotate_by_z(cube.angle_x())
+        #     cube.rotate_z_axis_wheel(cube.angle_x())
 
         # if cube.angle_z() > 0:
-        #     cube.rotate_by_x(cube.angle_z())
+        #     cube.rotate_x_axis_wheel(cube.angle_z())
         # if cube.angle_z() < 0:
-        #     cube.rotate_by_x(cube.angle_z())
+        #     cube.rotate_x_axis_wheel(cube.angle_z())
 
 
 if __name__ == '__main__':
